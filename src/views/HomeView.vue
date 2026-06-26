@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
     <!-- Hero Section -->
     <div class="relative bg-pres-dark text-white overflow-hidden">
       <div class="absolute inset-0">
-        <img class="w-full h-full object-cover blur-sm scale-105" src="/gedung-baru.png" alt="President University Building" />
+        <img class="w-full h-full object-cover blur-[2px] scale-105" src="/gedung-baru.png" alt="President University Building" />
         <div class="absolute inset-0 bg-pres-dark/50" />
       </div>
       <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
