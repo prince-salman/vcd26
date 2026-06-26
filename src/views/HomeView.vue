@@ -7,8 +7,8 @@ import { RouterLink } from 'vue-router'
     <!-- Hero Section -->
     <div class="relative bg-pres-dark text-white overflow-hidden">
       <div class="absolute inset-0">
-        <img class="w-full h-full object-cover opacity-30" src="/gedung.jpg" alt="President University Building" />
-        <div class="absolute inset-0 bg-gradient-to-t from-pres-dark to-transparent mix-blend-multiply" />
+        <img class="w-full h-full object-cover" src="/gedung.jpg" alt="President University Building" />
+        <div class="absolute inset-0 bg-pres-dark/50" />
       </div>
       <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">
