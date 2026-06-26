@@ -11,13 +11,13 @@ import { RouterLink } from 'vue-router'
         <div class="absolute inset-0 bg-pres-dark/50" />
       </div>
       <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white drop-shadow-lg">
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">
           Information Technology
         </h1>
-        <p class="mt-6 text-xl max-w-3xl text-gray-200 drop-shadow-md">
+        <p class="mt-6 text-xl max-w-3xl text-white">
           Batch 2026 • President University
         </p>
-        <p class="mt-4 text-lg max-w-2xl text-gray-400">
+        <p class="mt-4 text-lg max-w-2xl text-white">
           Empowering the future through technology, innovation, and leadership. Discover our journey, our projects, and our people.
         </p>
         <div class="mt-10 flex space-x-4">
