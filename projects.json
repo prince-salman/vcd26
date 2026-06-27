@@ -1,0 +1,17 @@
+[
+  {
+    "id": "project-01",
+    "title": "PresUniv Student Hub",
+    "category": "Web Application",
+    "description": "Platform portal akademik terintegrasi untuk mahasiswa IT President University untuk berbagi catatan kuliah, modul praktikum, dan forum diskusi.",
+    "tech_stack": ["React.js", "Node.js", "Express", "MongoDB"],
+    "image_url": "https://raw.githubusercontent.com/nama-org-github-kamu/nama-repo-kamu/main/public/assets/projects/student-hub.png",
+    "github_link": "https://github.com/nama-org-github-kamu/presuniv-student-hub",
+    "live_demo": "https://studenthub.presuniv.ac.id",
+    "year": "2026",
+    "team": [
+      {"nim": "008202600001", "name": "Aditya Pratama"},
+      {"nim": "008202600012", "name": "Siti Nurhaliza"}
+    ]
+  }
+]
