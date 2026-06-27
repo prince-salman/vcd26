@@ -177,7 +177,7 @@ const handleLogin = () => {
 
           <button 
             @click="handleLogin" 
-            class="text-gray-500 hover:text-pres-red font-medium transition-colors border border-gray-300 px-5 py-2 rounded-full hover:border-pres-red"
+            class="text-gray-500 hover:text-pres-blue font-medium transition-colors border border-gray-300 px-5 py-2 rounded-full hover:border-pres-blue"
           >
             Login
           </button>
