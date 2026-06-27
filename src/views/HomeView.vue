@@ -21,7 +21,7 @@ import { RouterLink } from 'vue-router'
           Empowering the future through technology, innovation, and leadership. Discover our journey, our projects, and our people.
         </p>
         <div class="mt-10 flex space-x-4">
-          <RouterLink to="/directory" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-pres-red hover:bg-red-800 transition-colors">
+          <RouterLink to="/directory" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-pres-blue hover:bg-blue-900 transition-colors">
             Meet the Batch
           </RouterLink>
           <RouterLink to="/projects" class="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-pres-dark transition-colors">
@@ -34,7 +34,7 @@ import { RouterLink } from 'vue-router'
     <!-- Core Values / Highlights -->
     <div class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h2 class="text-base font-semibold text-pres-red tracking-wide uppercase">Our Vision</h2>
+        <h2 class="text-base font-semibold text-pres-blue tracking-wide uppercase">Our Vision</h2>
         <p class="mt-1 text-3xl font-extrabold text-gray-900 sm:text-4xl sm:tracking-tight">
           Shaping the Digital World
         </p>
@@ -49,7 +49,7 @@ import { RouterLink } from 'vue-router'
             <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full shadow-sm hover:shadow-md transition-shadow border border-gray-100">
               <div class="-mt-6">
                 <div>
-                  <span class="inline-flex items-center justify-center p-3 bg-pres-red rounded-md shadow-lg">
+                  <span class="inline-flex items-center justify-center p-3 bg-pres-blue rounded-md shadow-lg">
                     <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                     </svg>
@@ -67,7 +67,7 @@ import { RouterLink } from 'vue-router'
             <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full shadow-sm hover:shadow-md transition-shadow border border-gray-100">
               <div class="-mt-6">
                 <div>
-                  <span class="inline-flex items-center justify-center p-3 bg-pres-red rounded-md shadow-lg">
+                  <span class="inline-flex items-center justify-center p-3 bg-pres-blue rounded-md shadow-lg">
                     <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
@@ -85,7 +85,7 @@ import { RouterLink } from 'vue-router'
             <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full shadow-sm hover:shadow-md transition-shadow border border-gray-100">
               <div class="-mt-6">
                 <div>
-                  <span class="inline-flex items-center justify-center p-3 bg-pres-red rounded-md shadow-lg">
+                  <span class="inline-flex items-center justify-center p-3 bg-pres-blue rounded-md shadow-lg">
                     <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
