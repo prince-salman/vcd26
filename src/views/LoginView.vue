@@ -63,7 +63,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { supabase } from "../lib/supabase"; 
 import { login, getUserRole } from "../services/authService";
 
 const router = useRouter();
