@@ -10,9 +10,7 @@
 
         <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome</h1>
         <p class="text-gray-500 mb-8">Enter your credentials to access your account.</p>
-        <p v-if="errorMessage" class="mb-4 text-sm text-red-500">
-  {{ errorMessage }}
-</p>
+        <p v-if="errorMessage" class="mb-4 text-sm text-red-500">{{ errorMessage }}</p>
 
         <form @submit.prevent="handleLogin" class="space-y-6">
           <div>
@@ -65,7 +63,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../lib/supabase"; 
+import { login, getUserRole } from "../services/authService";
 
 const router = useRouter();
 
@@ -78,18 +77,24 @@ const handleLogin = async () => {
   loading.value = true;
   errorMessage.value = "";
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  });
-
-  loading.value = false;
+  const { data, error } = await login(email.value, password.value);
 
   if (error) {
     errorMessage.value = error.message;
+    loading.value = false;
     return;
   }
 
-  router.push("/admin");
+  if (data.user) {
+      const role = await getUserRole(data.user.id);
+
+      if (role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/user');
+      }
+    }
+
+  loading.value = false;
 };
 </script>
