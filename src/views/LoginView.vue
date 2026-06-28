@@ -10,6 +10,9 @@
 
         <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome</h1>
         <p class="text-gray-500 mb-8">Enter your credentials to access your account.</p>
+        <p v-if="errorMessage" class="mb-4 text-sm text-red-500">
+  {{ errorMessage }}
+</p>
 
         <form @submit.prevent="handleLogin" class="space-y-6">
           <div>
@@ -37,12 +40,12 @@
             />
           </div>
 
-          <button 
-            type="submit" 
-            class="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl"
-          >
-            Login
-          </button>
+          <button
+            type="submit"
+            :disabled="loading"
+            class="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-500 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl">
+            {{ loading ? "Logging in..." : "Login" }}
+            </button>
         </form>
       </div>
     </div>
@@ -60,13 +63,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { supabase } from "../lib/supabase";
 
-const email = ref('');
-const password = ref('');
+const router = useRouter();
 
-const handleLogin = () => {
-  console.log("Logging in with:", email.value, password.value);
-  // Di sini nanti kita bakal panggil fungsi supabase.auth.signInWithPassword
+const email = ref("");
+const password = ref("");
+const loading = ref(false);
+const errorMessage = ref("");
+
+const handleLogin = async () => {
+  loading.value = true;
+  errorMessage.value = "";
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: email.value,
+    password: password.value,
+  });
+
+  loading.value = false;
+
+  if (error) {
+    errorMessage.value = error.message;
+    return;
+  }
+
+  router.push("/admin");
 };
 </script>
