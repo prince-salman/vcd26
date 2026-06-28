@@ -39,13 +39,13 @@ const router = createRouter({
     {
       path: '/user',
       name: 'user',
-      component: () => import('../views/user/userDashboard.vue'),
+      component: () => import('../views/user/UserDashboard.vue'),
       meta: { requiresAuth: true, role: 'user' }
     },
   ]
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const { data: { session } } = await supabase.auth.getSession();
   
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
