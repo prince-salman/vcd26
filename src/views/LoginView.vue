@@ -79,7 +79,7 @@ const handleLogin = async () => {
   const { data, error } = await login(email.value, password.value);
 
   if (error) {
-    errorMessage.value = error.message;
+    errorMessage.value = (error as any).message || "Terjadi kesalahan saat login";
     loading.value = false;
     return;
   }
