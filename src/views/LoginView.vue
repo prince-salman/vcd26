@@ -73,27 +73,26 @@ const loading = ref(false);
 const errorMessage = ref("");
 
 const handleLogin = async () => {
+  // 1. Nyalakan efek loading dan bersihkan pesan error lama
   loading.value = true;
   errorMessage.value = "";
 
+  // 2. Panggil fungsi login dari authService
   const { data, error } = await login(email.value, password.value);
 
+  // 3. Kalau ada error (misal password salah)
   if (error) {
-    errorMessage.value = (error as any).message || "Terjadi kesalahan saat login";
-    loading.value = false;
-    return;
+    // Tampilkan pesannya
+    errorMessage.value = (error as any).message || "Email atau password salah.";
+    // PENTING: Matikan loading supaya tombol balik normal
+    loading.value = false; 
+    return; // Stop fungsi di sini, jangan lanjut ke bawah
   }
 
-  if (data.user) {
-      const role = await getUserRole(data.user.id);
-
-      if (role === 'admin') {
-        router.push('/admin');
-      } else {
-        router.push('/user');
-      }
-    }
-
+  // 4. Kalau sukses, matikan loading dan pindah halaman
   loading.value = false;
+  
+  // (Logika redirect lu di sini, contoh:)
+  // router.push( dashboardLink.value ) 
 };
 </script>

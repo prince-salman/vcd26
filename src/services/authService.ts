@@ -7,9 +7,12 @@ export async function login(email: string, password: string) {
     password,
   });
 
-  if (error) throw error;
+  // KALAU ERROR, LANGSUNG RETURN KE KOMPONEN (JANGAN DI-THROW)
+  if (error) {
+    return { data: null, error };
+  }
 
-  // Jika login berhasil, ambil rolenya dan simpan ke localStorage
+  // Jika login berhasil (tidak ada error), ambil role
   if (authData.user) {
     const role = await getUserRole(authData.user.id);
     if (role) {
@@ -17,7 +20,7 @@ export async function login(email: string, password: string) {
     }
   }
 
-  return { data: authData, error };
+  return { data: authData, error: null };
 }
 
 // 2. Fungsi untuk Logout (DITAMBAHKAN PENGHAPUSAN ROLE)
