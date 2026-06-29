@@ -63,9 +63,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { login, getUserRole } from "../services/authService";
+import { login } from "../services/authService";
 
-const router = useRouter();
+// const router = useRouter();
 
 const email = ref("");
 const password = ref("");
@@ -78,7 +78,7 @@ const handleLogin = async () => {
   errorMessage.value = "";
 
   // 2. Panggil fungsi login dari authService
-  const { data, error } = await login(email.value, password.value);
+  const { error } = await login(email.value, password.value);
 
   // 3. Kalau ada error (misal password salah)
   if (error) {
