@@ -44,7 +44,7 @@ const filteredStudents = computed(() => {
 
     <div class="max-w-md mx-auto mb-12 ">
       <div class="rounded-md shadow-sm ">
-        <input v-model="searchQuery" type="text" placeholder="{{ translations[currentLang].dirSearchPlaceholder }}"
+        <input v-model="searchQuery" type="text" :placeholder="translations[currentLang].dirSearchPlaceholder"
           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pres-blue focus:border-pres-blue shadow-sm transition ease-in-out duration-150 text-gray-900 outline-none" />
       </div>
     </div>
