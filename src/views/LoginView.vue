@@ -14,13 +14,13 @@
 
         <form @submit.prevent="handleLogin" class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <input 
-              v-model="email" 
-              type="email" 
+            <label class="block text-sm font-medium text-gray-700 mb-2">Username or Email</label>
+            <input
+              v-model="emailOrUsername" 
+              type="text" 
               required
-              placeholder="name@example.com"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              placeholder="name@example.com or johndoe"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -43,7 +43,7 @@
             :disabled="loading"
             class="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-500 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl">
             {{ loading ? "Logging in..." : "Login" }}
-            </button>
+          </button>
         </form>
       </div>
     </div>
@@ -62,37 +62,36 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"; // Cukup satu impor useRouter saja
 import { login } from "../services/authService";
 
-// const router = useRouter();
+// 1. HAPUS tanda komentar (//) pada baris ini agar router aktif
+const router = useRouter(); 
 
-const email = ref("");
+const emailOrUsername = ref("");
 const password = ref("");
 const loading = ref(false);
 const errorMessage = ref("");
 
 const handleLogin = async () => {
-  // 1. Nyalakan efek loading dan bersihkan pesan error lama
   loading.value = true;
   errorMessage.value = "";
 
-  // 2. Panggil fungsi login dari authService
-  const { error } = await login(email.value, password.value);
+  const { error } = await login(emailOrUsername.value, password.value);
 
-  // 3. Kalau ada error (misal password salah)
+  // Kalau ada error (misal password salah)
   if (error) {
     // Tampilkan pesannya
     errorMessage.value = (error as any).message || "Email atau password salah.";
-    // PENTING: Matikan loading supaya tombol balik normal
-    loading.value = false; 
-    return; // Stop fungsi di sini, jangan lanjut ke bawah
+    // Matikan loading supaya tombol balik normal
+    loading.value = false;
+    return; // Stop fungsi di sini
   }
 
-  // 4. Kalau sukses, matikan loading dan pindah halaman
+  // Kalau sukses, matikan loading
   loading.value = false;
-  
-  // (Logika redirect lu di sini, contoh:)
-  // router.push( dashboardLink.value ) 
+
+  // 2. HAPUS tanda komentar (//) pada baris ini dan arahkan ke rute dashboard
+  router.push('/user'); 
 };
 </script>

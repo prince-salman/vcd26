@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import studentsData from '../data/dataMahasiswa.json'
+import { currentLang, translations } from '../store/langStore'
 
 interface Student {
   nim: string
@@ -35,15 +36,15 @@ const filteredStudents = computed(() => {
 <template>
   <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Student Directory</h1>
+      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">{{ translations[currentLang].dirTitle }}</h1>
       <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-        Jelajahi profil dan portofolio mahasiswa Information Technology angkatan 2026.
+        {{ translations[currentLang].dirSubtitle }}
       </p>
     </div>
 
     <div class="max-w-md mx-auto mb-12 ">
       <div class="rounded-md shadow-sm ">
-        <input v-model="searchQuery" type="text" placeholder="Type to search (Name, NIM, Skill)..."
+        <input v-model="searchQuery" type="text" placeholder="{{ translations[currentLang].dirSearchPlaceholder }}"
           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pres-blue focus:border-pres-blue shadow-sm transition ease-in-out duration-150 text-gray-900 outline-none" />
       </div>
     </div>

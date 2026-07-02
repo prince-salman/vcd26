@@ -72,6 +72,13 @@
                   </td>
                 </tr>
                 <tr v-if="pendingProjects.length === 0">
+                  <td colspan="5" class="text-center py-8">
+                    <div class="text-gray-400 py-4 italic">
+                      Tidak ada proyek yang menunggu persetujuan.
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="pendingProjects.length === 0">
                   <td colspan="4" class="text-center py-8 text-gray-400">No pending projects. All clear!</td>
                 </tr>
               </tbody>
@@ -172,6 +179,7 @@ const fetchProjects = async () => {
 // 2. Fungsi untuk menyetujui proyek (Ubah status jadi published)
 const handleApprove = async (projectId) => {
   if (!confirm('Setujui proyek ini untuk diterbitkan ke publik?')) return
+  isProcessing.value = true
 
   try {
     const { error } = await supabase
@@ -182,16 +190,18 @@ const handleApprove = async (projectId) => {
     if (error) throw error
     
     alert('Proyek berhasil disetujui!')
-    fetchProjects() // Refresh data tabel setelah berhasil
+    fetchProjects() 
   } catch (error) {
     console.error('Gagal menyetujui proyek:', error.message)
     alert('Gagal memproses persetujuan.')
+  } finally {
+    isProcessing.value = false 
   }
 }
 
 // 3. Fungsi untuk menolak/menghapus proyek
 const handleRejectOrDelete = async (projectId) => {
-  if (!confirm('Apakah lo yakin ingin menghapus/menolak proyek ini?')) return
+  if (!confirm('Apakah Anda yakin ingin menghapus/menolak proyek ini?')) return
 
   try {
     // Pilihan A: Mengubah status menjadi banned/rejected

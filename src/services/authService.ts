@@ -1,31 +1,46 @@
 import { supabase } from "../lib/supabase"; 
 
-// 1. Fungsi untuk Login (DITAMBAHKAN LOGIKA ROLE)
-export async function login(email: string, password: string) {
+export async function login(emailOrUsername: string, password: string) {
+  let loginEmail = emailOrUsername;
+
+  // Cek apakah input mengandung '@' (itu email)
+  const isEmail = emailOrUsername.includes('@');
+
+  // Jika bukan email, panggil fungsi RPC yang tadi dibuat
+  if (!isEmail) {
+    const { data, error: rpcError } = await supabase
+      .rpc('get_email_by_username', { input_username: emailOrUsername });
+
+    if (rpcError || !data) {
+      return { data: null, error: { message: "Username tidak ditemukan." } };
+    }
+
+    loginEmail = data; // Email didapat dari hasil RPC
+  }
+
+  // Lanjut login dengan email yang sudah valid
   const { data: authData, error } = await supabase.auth.signInWithPassword({
-    email,
+    email: loginEmail,
     password,
   });
 
-  // KALAU ERROR, LANGSUNG RETURN KE KOMPONEN (JANGAN DI-THROW)
-  if (error) {
-    return { data: null, error };
-  }
+  if (error) return { data: null, error };
 
-  // Jika login berhasil (tidak ada error), ambil role
+  // Set role setelah login berhasil
   if (authData.user) {
-    const role = await getUserRole(authData.user.id);
-    if (role) {
-      localStorage.setItem('user_role', role);
-    }
+    const { data: roleData } = await supabase
+      .from('profiles_user')
+      .select('role') // Pastikan field 'role' ada di tabel profiles_user
+      .eq('id', authData.user.id)
+      .single();
+    
+    if (roleData) localStorage.setItem('user_role', roleData.role);
   }
 
   return { data: authData, error: null };
 }
 
-// 2. Fungsi untuk Logout (DITAMBAHKAN PENGHAPUSAN ROLE)
 export async function logout() {
-  // Hapus role dari storage sebelum logout agar bersih
   localStorage.removeItem('user_role');
   
   const { error } = await supabase.auth.signOut();
@@ -34,19 +49,26 @@ export async function logout() {
   }
 }
 
-// Fungsi getUserRole tetap sama
 export async function getUserRole(userId: string) {
-  const { data, error } = await supabase
-    .from('profiles') 
-    .select('role')    
+  const { data: adminData, error: adminError } = await supabase
+    .from('profiles_Admin') 
+    .select('id')    
     .eq('id', userId) 
-    .single();            
+    .maybeSingle(); 
 
-  if (error) return null;
-  return data?.role; 
+  if (adminData) return 'admin';
+
+  const { data: userData, error: userError } = await supabase
+    .from('profiles_user') 
+    .select('id')    
+    .eq('id', userId) 
+    .maybeSingle();
+
+  if (userData) return 'user';
+
+  return null; 
 }
 
-// Fungsi lainnya tidak berubah
 export async function getCurrentUser() {
   return await supabase.auth.getUser();
 }
@@ -54,3 +76,4 @@ export async function getCurrentUser() {
 export async function getSession() {
   return await supabase.auth.getSession();
 }
+

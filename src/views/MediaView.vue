@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { currentLang, translations } from '../store/langStore'
 
 // Data dummy untuk galeri media
 const mediaItems = ref([
@@ -40,9 +41,9 @@ const mediaItems = ref([
   <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
     <!-- Header Section -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Media Gallery</h1>
+      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">{{ translations[currentLang].mediaTitle }}</h1>
       <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-        Kumpulan dokumentasi kegiatan dan memori IT Batch 2026
+        {{ translations[currentLang].mediaSubtitle }}
       </p>
     </div>
 

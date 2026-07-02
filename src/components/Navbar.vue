@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { logout } from '../services/authService'; 
 import { computed } from 'vue';
 import directoryData from '../data/dataMahasiswa.json';
+import { currentLang, translations } from '../store/langStore'
 // import projectsData from '../data/projects.json'; 
 // import mediaData from '../data/media.json';
 
@@ -15,7 +16,12 @@ const isDropdownOpen = ref(false);
 const dropdownRef = ref(null);
 const isSearchOpen = ref(false);
 const searchQuery = ref('');
+const isLangDropdownOpen = ref(false)
 
+const setLanguage = (lang: string) => {
+  currentLang.value = lang
+  isLangDropdownOpen.value = false
+}
 
 // dummy sementara nunggu
 const projectsData = [
@@ -73,21 +79,15 @@ const handleLogout = async () => {
   // 2. Set state ke false
   isLoggedIn.value = false;
   
-  // 3. Pindah ke halaman Home, lalu reload paksa untuk memastikan 
-  // semua data session di memory benar-benar terhapus
   await router.push('/');
   window.location.reload(); 
 };
 
-// Fungsi tutup dropdown
 const closeDropdown = () => {
   isDropdownOpen.value = false;
 };
 
-// Fungsi deteksi klik di luar dropdown
 const handleClickOutside = (event: MouseEvent) => {
-  // Tambahkan pengecekan: 
-  // Jika klik terjadi di dalam dropdown ATAU di tombol profil, JANGAN tutup dropdown
   const profileButton = document.querySelector('.profile-btn'); 
   
   if (
@@ -101,21 +101,17 @@ const handleClickOutside = (event: MouseEvent) => {
 };
 
 onMounted(async () => {
-  // 1. Cek session awal
   const { data } = await supabase.auth.getSession();
   isLoggedIn.value = !!data.session;
 
-  // 2. Listener Auth
   supabase.auth.onAuthStateChange((_event, session) => {
     isLoggedIn.value = !!session;
   });
 
-  // 3. Listener Klik di Luar
   document.addEventListener('click', handleClickOutside);
 });
 
 onUnmounted(() => {
-  // Bersihkan listener saat komponen di-unmount
   document.removeEventListener('click', handleClickOutside);
 });
 </script>
@@ -125,7 +121,7 @@ onUnmounted(() => {
     <div class="max-w-full mx-auto px-4 lg:px-4">
       <div class="flex items-center justify-between w-full h-18">
         <div class="flex flex-1 items-center">
-          <RouterLink to="/" class="flex-shrink-0 flex items-center -mb-2">
+          <RouterLink to="/" class="shrink-0 flex items-center -mb-2">
             <img src="/logo.png" alt="IT Logo" class="h-10 w-auto -mt-2" />
           </RouterLink>
 
@@ -152,41 +148,55 @@ onUnmounted(() => {
             to="/directory"
             class="text-gray-700 hover:text-pres-blue px-3 py-2 rounded-md text-sm font-medium transition-colors"
             active-class="text-pres-blue font-semibold"
-            >Directory</RouterLink
+            >{{ translations[currentLang].directory }}</RouterLink
           >
           <RouterLink
             to="/projects"
             class="text-gray-700 hover:text-pres-blue px-3 py-2 rounded-md text-sm font-medium transition-colors"
             active-class="text-pres-blue font-semibold"
-            >Projects</RouterLink
+            >{{ translations[currentLang].projects }}</RouterLink
           >
           <RouterLink
             to="/media"
             class="text-gray-700 hover:text-pres-blue px-3 py-2 rounded-md text-sm font-medium transition-colors"
             active-class="text-pres-blue font-semibold"
-            >Media</RouterLink
+            >{{ translations[currentLang].media }}</RouterLink
           >
         </div>
 
         <div class="flex-1 flex justify-end items-center space-x-4">
   
-          <button
-            class="text-gray-500 hover:text-blue-600 transition"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-            </svg>
-          </button>
+          <div class="relative">
+            <button
+              @click="isLangDropdownOpen = !isLangDropdownOpen"
+              class="text-gray-500 hover:text-blue-600 transition block"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+            </button>
+
+            <div 
+              v-if="isLangDropdownOpen" 
+              class="absolute right-0 mt-2 w-32 bg-white border border-gray-100 rounded-lg shadow-lg py-1 z-50 text-xs text-gray-700"
+            >
+              <button @click="setLanguage('en')" class="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors">English</button>
+              <button @click="setLanguage('id')" class="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors">Indonesia</button>
+              <button @click="setLanguage('zh')" class="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors">Chinese</button>
+              <button @click="setLanguage('ko')" class="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors">Korean</button>
+            </div>
+          </div>
 
           <div class="h-6 w-px bg-gray-300"></div>
 
-          <button 
-            v-if="!isLoggedIn" 
-            @click="router.push('/login')" 
-            class="text-gray-500 sm:block hidden hover:text-blue-600 font-medium border border-gray-300 px-5 py-2 rounded-lg transition"
-          >
-            Login
-          </button>
+          <div v-if="!isLoggedIn" class="hidden sm:flex items-center gap-3">
+            <button 
+              @click="router.push('/login')"
+              class="text-sm font-semibold text-gray-600 hover:text-blue-600 transition px-3"
+            >
+              {{ translations[currentLang].login }}
+            </button>
+          </div>
 
           <div v-else class="relative">
             <button 
@@ -311,22 +321,25 @@ onUnmounted(() => {
           active-class="text-pres-blue bg-blue-50 border-l-4 border-pres-blue"
           >Media</RouterLink
         >
-        <div class="border-t border-gray-200 mt-2 pt-3 px-4 flex items-center space-x-6">
-        
-          <button class="text-gray-500 hover:text-pres-blue transition-colors p-1">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-            </svg>
-          </button>
-
+        <div v-if="!isLoggedIn" class="flex flex-col gap-3 w-full mt-2">
           <button 
-            @click="isLoggedIn ? handleLogout() : router.push('/login')"
-            class="text-gray-500 hover:text-pres-blue font-medium transition-colors border border-gray-300 px-5 py-2 rounded-lg"
+            @click="() => {
+              router.push('/login');
+              isMenuOpen = false;
+            }"
+            class="w-full text-center text-gray-600 font-medium border border-gray-300 px-5 py-2 rounded-lg hover:text-blue-600 transition-colors"
           >
-            {{ isLoggedIn ? 'Logout' : 'Login' }}
+            Log in
           </button>
-          
         </div>
+
+        <button 
+          v-else
+          @click="handleLogout()"
+          class="w-full mt-2 text-gray-500 hover:text-red-600 font-medium transition-colors border border-gray-300 px-5 py-2 rounded-lg"
+        >
+          Logout
+        </button>
       </div>
     </div>
   </nav>
@@ -393,7 +406,7 @@ onUnmounted(() => {
                 <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-3">Directory</h3>
                 <ul class="space-y-1">
                   <li v-for="student in searchResults.directory" :key="student.nim">
-                    <a href="#" class="block px-3 py-2 rounded-lg hover:bg-blue-50 transition flex justify-between items-center group">
+                    <a href="#" class=" px-3 py-2 rounded-lg hover:bg-blue-50 transition flex justify-between items-center group">
                       <div>
                         <div class="text-sm font-medium text-gray-800 group-hover:text-blue-700">{{ student.name }}</div>
                         <div class="text-xs text-gray-500">{{ student.nim }}</div>

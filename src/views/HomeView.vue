@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { currentLang, translations } from '../store/langStore'
 </script>
 
 <template>
@@ -8,24 +9,24 @@ import { RouterLink } from 'vue-router'
     <div class="relative bg-pres-dark text-white overflow-hidden">
       <div class="absolute inset-0">
         <img class="w-full h-full object-cover blur-[2px] scale-105" src="/gedung-baru.png" alt="President University Building" />
-        <div class="absolute inset-0 bg-pres-dark/50" />
+        <div class="absolute inset-0 bg-pres-dark/50"></div>
       </div>
       <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">
-          Information Technology
+          {{ translations[currentLang].heroTitle }}
         </h1>
         <p class="mt-6 text-xl max-w-3xl text-white">
-          Batch 2026 • President University
+          {{ translations[currentLang].heroSubtitle }}
         </p>
         <p class="mt-4 text-lg max-w-2xl text-white">
-          Empowering the future through technology, innovation, and leadership. Discover our journey, our projects, and our people.
+          {{ translations[currentLang].heroDesc }}
         </p>
         <div class="mt-10 flex space-x-4">
           <RouterLink to="/directory" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-pres-blue hover:bg-blue-900 transition-colors">
-            Meet the Batch
+            {{ translations[currentLang].btnMeet }}
           </RouterLink>
           <RouterLink to="/projects" class="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-pres-dark transition-colors">
-            View Projects
+            {{ translations[currentLang].btnView }}
           </RouterLink>
         </div>
       </div>
@@ -34,12 +35,12 @@ import { RouterLink } from 'vue-router'
     <!-- Core Values / Highlights -->
     <div class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h2 class="text-base font-semibold text-pres-blue tracking-wide uppercase">Our Vision</h2>
+        <h2 class="text-base font-semibold text-pres-blue tracking-wide uppercase">{{ translations[currentLang].visionLabel }}</h2>
         <p class="mt-1 text-3xl font-extrabold text-gray-900 sm:text-4xl sm:tracking-tight">
-          Shaping the Digital World
+          {{ translations[currentLang].visionTitle }}
         </p>
         <p class="max-w-xl mt-5 mx-auto text-xl text-gray-500">
-          We are a community of passionate developers, designers, and engineers dedicated to solving real-world problems.
+          {{ translations[currentLang].visionDesc }}
         </p>
       </div>
 
@@ -55,9 +56,9 @@ import { RouterLink } from 'vue-router'
                     </svg>
                   </span>
                 </div>
-                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">Technical Excellence</h3>
+                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">{{ translations[currentLang].card1Title }}</h3>
                 <p class="mt-5 text-base text-gray-500">
-                  Mastering modern frameworks, algorithms, and software architectures to build robust solutions.
+                  {{ translations[currentLang].card1Desc }}
                 </p>
               </div>
             </div>
@@ -73,9 +74,9 @@ import { RouterLink } from 'vue-router'
                     </svg>
                   </span>
                 </div>
-                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">Innovation First</h3>
+                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">{{ translations[currentLang].card2Title }}</h3>
                 <p class="mt-5 text-base text-gray-500">
-                  Pushing boundaries and adopting cutting-edge technologies to stay ahead of the curve.
+                  {{ translations[currentLang].card2Desc }}
                 </p>
               </div>
             </div>
@@ -91,9 +92,9 @@ import { RouterLink } from 'vue-router'
                     </svg>
                   </span>
                 </div>
-                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">Strong Community</h3>
+                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">{{ translations[currentLang].card3Title }}</h3>
                 <p class="mt-5 text-base text-gray-500">
-                  Collaborating, learning together, and building a supportive network that lasts beyond graduation.
+                  {{ translations[currentLang].card3Desc }}
                 </p>
               </div>
             </div>
