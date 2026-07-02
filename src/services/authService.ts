@@ -56,6 +56,7 @@ export async function getUserRole(userId: string) {
     .eq('id', userId) 
     .maybeSingle(); 
 
+  if (adminError) console.error("Admin check error:", adminError);
   if (adminData) return 'admin';
 
   const { data: userData, error: userError } = await supabase
@@ -64,6 +65,7 @@ export async function getUserRole(userId: string) {
     .eq('id', userId) 
     .maybeSingle();
 
+  if (userError) console.error("User check error:", userError);
   if (userData) return 'user';
 
   return null; 
