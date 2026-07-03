@@ -12,7 +12,7 @@ export async function login(emailOrUsername: string, password: string) {
       .rpc('get_email_by_username', { input_username: emailOrUsername });
 
     if (rpcError || !data) {
-      return { data: null, error: { message: "Username tidak ditemukan." } };
+      return { data: null, role: null, error: { message: "Username tidak ditemukan." } };
     }
 
     loginEmail = data; // Email didapat dari hasil RPC
@@ -24,20 +24,22 @@ export async function login(emailOrUsername: string, password: string) {
     password,
   });
 
-  if (error) return { data: null, error };
+  if (error) return { data: null, role: null, error };
 
-  // Set role setelah login berhasil
+  let userRole: string | null = null;
+
+  // Set role secara dinamis setelah login berhasil
   if (authData.user) {
-    const { data: roleData } = await supabase
-      .from('profiles_user')
-      .select('role') // Pastikan field 'role' ada di tabel profiles_user
-      .eq('id', authData.user.id)
-      .single();
+    // Memanfaatkan fungsi getUserRole yang sudah kamu buat di bawah
+    userRole = await getUserRole(authData.user.id);
     
-    if (roleData) localStorage.setItem('user_role', roleData.role);
+    if (userRole) {
+      localStorage.setItem('user_role', userRole);
+    }
   }
 
-  return { data: authData, error: null };
+  // Kembalikan juga role-nya supaya bisa dibaca di LoginView
+  return { data: authData, role: userRole, error: null };
 }
 
 export async function logout() {
@@ -51,7 +53,7 @@ export async function logout() {
 
 export async function getUserRole(userId: string) {
   const { data: adminData, error: adminError } = await supabase
-    .from('profiles_Admin') 
+    .from('profiles_admin') 
     .select('id')    
     .eq('id', userId) 
     .maybeSingle(); 
@@ -78,4 +80,3 @@ export async function getCurrentUser() {
 export async function getSession() {
   return await supabase.auth.getSession();
 }
-

@@ -4,7 +4,7 @@
       
       <div class="bg-white border border-gray-200 rounded-lg p-3 mb-6 shadow-sm text-center">
         <h1 class="text-sm font-bold text-gray-600 uppercase tracking-widest px-2">
-          {{ translations[currentLang].dashboardTitle }}
+          {{ translations[currentLang].dashboardUser }}
         </h1>
       </div>
 

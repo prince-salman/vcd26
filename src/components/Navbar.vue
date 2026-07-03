@@ -142,7 +142,7 @@ onUnmounted(() => {
             to="/"
             class="text-gray-700 hover:text-pres-blue px-3 py-2 rounded-md text-sm font-medium transition-colors"
             active-class="text-pres-blue font-semibold"
-            >Home</RouterLink
+            >{{ translations[currentLang].home }}</RouterLink
           >
           <RouterLink
             to="/directory"

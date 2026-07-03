@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { supabase } from "../lib/supabase";
 import { getUserRole } from '../services/authService.ts';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -39,7 +40,7 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: () => import('../views/admin/AdminDashboard.vue'),
-      meta: { requiresAdmin: true }
+      meta: { requiresAuth: true, role: 'admin' }
     },
     {
       path: '/user',

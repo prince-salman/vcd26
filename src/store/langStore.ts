@@ -15,7 +15,7 @@ export const translations: Record<string, Record<string, string>> = {
     projects: 'Projects',
     media: 'Media',
     login: 'Log in',
-    dashboardTitle: 'User Dashboard',
+    dashboardUser: 'User Dashboard',
     welcome: 'Welcome',
     myProjects: 'My Projects',
     addNewProject: 'Add New Project',
@@ -42,7 +42,19 @@ export const translations: Record<string, Record<string, string>> = {
     projTitle: 'Our Projects',
     
     mediaTitle: 'Media Gallery',
-    mediaSubtitle: 'A collection of event documentation and memories of IT Batch 2026.'
+    mediaSubtitle: 'A collection of event documentation and memories of IT Batch 2026.',
+
+    adminDashboard: "Admin Dashboard",
+    projectApprovalQueue: "Project Approval Queue",
+    publishedProjects: "Published Projects",
+    date: "Date",
+    projectTitle: "Project Title",
+    teamName: "Team Name",
+    actions: "Actions",
+    approve: "Approve",
+    reject: "Reject",
+    noPendingProjects: "No pending projects.",
+    noPublishedProjects: "No published projects yet."
   },
   id: {
     home: 'Beranda',
@@ -50,7 +62,7 @@ export const translations: Record<string, Record<string, string>> = {
     projects: 'Proyek',
     media: 'Media',
     login: 'Masuk',
-    dashboardTitle: 'Dasbor Pengguna',
+    dashboardUser: 'Dasbor Pengguna',
     welcome: 'Selamat Datang',
     myProjects: 'Proyek Saya',
     addNewProject: 'Tambah Proyek Baru',
@@ -77,7 +89,19 @@ export const translations: Record<string, Record<string, string>> = {
     projTitle: 'Proyek Kami',
     
     mediaTitle: 'Galeri Media',
-    mediaSubtitle: 'Kumpulan dokumentasi kegiatan dan memori IT Batch 2026.'
+    mediaSubtitle: 'Kumpulan dokumentasi kegiatan dan memori IT Batch 2026.',
+
+    adminDashboard: "Dashboard Admin",
+    projectApprovalQueue: "Antrean Persetujuan Proyek",
+    publishedProjects: "Proyek yang Diterbitkan",
+    date: "Tanggal",
+    projectTitle: "Judul Proyek",
+    teamName: "Nama Tim",
+    actions: "Aksi",
+    approve: "Setujui",
+    reject: "Tolak",
+    noPendingProjects: "Tidak ada proyek yang menunggu.",
+    noPublishedProjects: "Belum ada proyek yang diterbitkan."
   },
   zh: {
     home: '首页',
@@ -85,7 +109,7 @@ export const translations: Record<string, Record<string, string>> = {
     projects: '项目',
     media: '媒体',
     login: '登录',
-    dashboardTitle: '用户仪表板',
+    dashboardUser: '用户仪表板',
     welcome: '欢迎',
     myProjects: '我的项目',
     addNewProject: '添加新项目',
@@ -104,7 +128,19 @@ export const translations: Record<string, Record<string, string>> = {
     projTitle: '我们的项目',
     
     mediaTitle: '媒体库',
-    mediaSubtitle: '2026 届 IT 专业活动记录与回忆集锦。'
+    mediaSubtitle: '2026 届 IT 专业活动记录与回忆集锦。',
+
+    adminDashboard: "管理员仪表板",
+    projectApprovalQueue: "项目审批队列",
+    publishedProjects: "已发布项目",
+    date: "日期",
+    projectTitle: "项目名称",
+    teamName: "团队名称",
+    actions: "操作",
+    approve: "批准",
+    reject: "拒绝",
+    noPendingProjects: "没有待处理的项目。",
+    noPublishedProjects: "暂无已发布的项目。"
   },
   ko: {
     home: '홈',
@@ -112,7 +148,7 @@ export const translations: Record<string, Record<string, string>> = {
     projects: '프로젝트',
     media: '미디어',
     login: '로그인',
-    dashboardTitle: '사용자 대시보드',
+    dashboardUser: '사용자 대시보드',
     welcome: '환영합니다',
     myProjects: '내 프로젝트',
     addNewProject: '새 프로젝트 추가',
@@ -131,6 +167,18 @@ export const translations: Record<string, Record<string, string>> = {
     projTitle: '우리의 프로젝트',
     
     mediaTitle: '미디어 갤러리',
-    mediaSubtitle: 'IT 2026 학번의 행사 기록 및 추억 모음.'
+    mediaSubtitle: 'IT 2026 학번의 행사 기록 및 추억 모음.',
+
+    adminDashboard: "관리자 대시보드",
+    projectApprovalQueue: "프로젝트 승인 대기열",
+    publishedProjects: "게시된 프로젝트",
+    date: "날짜",
+    projectTitle: "프로젝트 제목",
+    teamName: "팀 이름",
+    actions: "작업",
+    approve: "승인",
+    reject: "거절",
+    noPendingProjects: "대기 중인 프로젝트가 없습니다.",
+    noPublishedProjects: "게시된 프로젝트가 없습니다."
   }
 }

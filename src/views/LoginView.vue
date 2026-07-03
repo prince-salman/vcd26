@@ -62,10 +62,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router"; // Cukup satu impor useRouter saja
+import { useRouter } from "vue-router"; 
 import { login } from "../services/authService";
 
-// 1. HAPUS tanda komentar (//) pada baris ini agar router aktif
 const router = useRouter(); 
 
 const emailOrUsername = ref("");
@@ -77,21 +76,24 @@ const handleLogin = async () => {
   loading.value = true;
   errorMessage.value = "";
 
-  const { error } = await login(emailOrUsername.value, password.value);
+  // Ambil data role hasil pengecekan dinamis
+  const { role, error } = await login(emailOrUsername.value, password.value);
 
-  // Kalau ada error (misal password salah)
   if (error) {
-    // Tampilkan pesannya
     errorMessage.value = (error as any).message || "Email atau password salah.";
-    // Matikan loading supaya tombol balik normal
     loading.value = false;
-    return; // Stop fungsi di sini
+    return; 
   }
 
-  // Kalau sukses, matikan loading
   loading.value = false;
 
-  // 2. HAPUS tanda komentar (//) pada baris ini dan arahkan ke rute dashboard
-  router.push('/user'); 
+  // Navigasi pintar sesuai dengan role akun yang masuk
+  if (role === 'admin') {
+    router.push('/admin');
+  } else if (role === 'user') {
+    router.push('/user');
+  } else {
+    errorMessage.value = "Akun berhasil masuk, tetapi role tidak terdaftar.";
+  }
 };
 </script>
