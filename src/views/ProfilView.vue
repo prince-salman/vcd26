@@ -6,7 +6,7 @@ const students2026 = [
   "Haura Husna Robiyah", "Earliana Puspa Prasetyo", "Nasyifatun Nafsah", "Rindu Melan Agustine",
   "William Manalu", "Andi Aini Kamila Putri A Irdan", "Muhammad Yusuf Saputra", "Naura Syakira Sitanggang",
   "Alesha Ghea Putri Arisandi", "Luna Shula Zahira"
-];
+].sort((a, b) => a.localeCompare(b));
 </script>
 
 <template>
