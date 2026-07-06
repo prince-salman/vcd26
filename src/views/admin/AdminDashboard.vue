@@ -266,9 +266,8 @@ import { supabase } from '../../lib/supabase'
 import { getNews, saveNewsItem, deleteNewsItem, getArtworks, saveArtwork, deleteArtwork, getCommissions, saveCommission, deleteCommission, uploadArtworkImage } from '../../services/dataService'
 
 const activeTab = ref('news')
-
-
-
+const user = ref<any>(null)
+const loading = ref(true)
 // News Logic
 const newsList = ref<any[]>([])
 const showNewsForm = ref(false)

@@ -51,7 +51,7 @@ export async function logout() {
   }
 }
 
-export async function getUserRole(userId: string) {
+export async function getUserRole(_userId: string) {
   // Bypass khusus untuk demo hari ini: Seluruh user yang login akan otomatis diarahkan ke Admin Dashboard.
   return 'admin';
 }
