@@ -113,7 +113,7 @@ const handleSignUp = async () => {
   errorMessage.value = '';
 
   if (form.password !== form.confirmPassword) {
-    errorMessage.value = 'Kata sandi tidak cocok. Mohon periksa kembali.';
+    errorMessage.value = 'Passwords do not match. Please check again.';
     return;
   }
 

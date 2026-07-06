@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { supabase } from "../lib/supabase";
-import { getUserRole } from '../services/authService.ts';
+import { getUserRole } from '../services/authService';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,30 +12,45 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/directory',
-      name: 'directory',
-      component: () => import('../views/DirectoryView.vue')
+      path: '/mahasiswa',
+      name: 'mahasiswa',
+      component: () => import('../views/MahasiswaView.vue')
     },
     {
-      path: '/projects',
-      name: 'projects',
-      component: () => import('../views/ProjectsView.vue')
+      path: '/galeri',
+      name: 'galeri',
+      component: () => import('../views/GaleriView.vue')
     },
     {
-      path: '/media',
-      name: 'media',
-      component: () => import('../views/MediaView.vue')
+      path: '/akademik',
+      name: 'akademik',
+      component: () => import('../views/AkademikView.vue')
+    },
+    {
+      path: '/profil',
+      name: 'profil',
+      component: () => import('../views/ProfilView.vue')
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: () => import('../views/NewsView.vue')
+    },
+    {
+      path: '/commission',
+      name: 'commission',
+      component: () => import('../views/CommissionView.vue')
+    },
+    {
+      path: '/kontak',
+      name: 'kontak',
+      component: () => import('../views/KontakView.vue')
     },
     {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
     },
-    // {
-    //   path: '/sign-up',
-    //   name: 'signUp',
-    //   component: () => import('../views/SignUpView.vue')
-    // },
     {
       path: '/admin',
       name: 'admin',
@@ -48,18 +63,22 @@ const router = createRouter({
       component: () => import('../views/user/UserDashboard.vue'),
       meta: { requiresAuth: true, role: 'user' }
     },
-  ]
+  ],
+  scrollBehavior(_to, _from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 router.beforeEach(async (to, _from, next) => {
-  // Ambil session dari Supabase
   const { data: { session } } = await supabase.auth.getSession();
   
-  // Cek meta tag di router (pastikan rute lo punya meta: { requiresAdmin: true/false })
   const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  // 1. Logika Halaman Admin
   if (requiresAdmin) {
     if (!session) {
       return next('/login');
@@ -68,13 +87,11 @@ router.beforeEach(async (to, _from, next) => {
     return role === 'admin' ? next() : next('/user');
   }
 
-  // 2. Logika Mencegah User yang sudah login akses halaman Login/Register
   if ((to.path === '/login' || to.path === '/register') && session) {
     const role = await getUserRole(session.user.id);
     return next(role === 'admin' ? '/admin' : '/user');
   }
 
-  // 3. Logika Proteksi Halaman User (Dashboard)
   if (requiresAuth && !session) {
     return next('/login');
   }

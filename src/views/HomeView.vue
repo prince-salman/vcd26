@@ -1,103 +1,68 @@
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { currentLang, translations } from '../store/langStore'
+import { getNews } from '../services/dataService'
+
+const newsList = ref<any[]>([])
+
+onMounted(async () => {
+  newsList.value = await getNews()
+})
+
+const topNewsList = computed(() => {
+  return newsList.value.filter(n => n.isTop).slice(0, 3)
+})
 </script>
 
 <template>
   <div class="bg-white">
     <!-- Hero Section -->
-    <div class="relative bg-pres-dark text-white overflow-hidden">
+    <div class="relative bg-gray-900 text-white overflow-hidden min-h-[70vh] flex items-center">
       <div class="absolute inset-0">
-        <img class="w-full h-full object-cover blur-[2px] scale-105" src="/gedung-baru.png" alt="President University Building" />
-        <div class="absolute inset-0 bg-pres-dark/50"></div>
+        <img src="/gedungfada.jpeg" alt="FADA Building" class="w-full h-full object-cover object-center" />
+        <div class="absolute inset-0 bg-gray-900/60"></div>
       </div>
-      <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">
-          {{ translations[currentLang].heroTitle }}
+      <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center z-10">
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-7xl text-white mb-6">
+          Limitless Creativity.
         </h1>
-        <p class="mt-6 text-xl max-w-3xl text-white">
-          {{ translations[currentLang].heroSubtitle }}
+        <p class="mt-4 text-xl max-w-3xl text-gray-300 font-light">
+          Visual Communication Design Study Program. The birthplace of innovative works and future designers.
         </p>
-        <p class="mt-4 text-lg max-w-2xl text-white">
-          {{ translations[currentLang].heroDesc }}
-        </p>
-        <div class="mt-10 flex space-x-4">
-          <RouterLink to="/directory" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-pres-blue hover:bg-blue-900 transition-colors">
-            {{ translations[currentLang].btnMeet }}
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-xs sm:max-w-none mx-auto">
+          <RouterLink to="/galeri" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold rounded-sm shadow-sm text-gray-900 bg-white hover:bg-gray-100 transition-colors w-full sm:w-auto">
+            Explore Works
           </RouterLink>
-          <RouterLink to="/projects" class="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-pres-dark transition-colors">
-            {{ translations[currentLang].btnView }}
+          <RouterLink to="/profil" class="inline-flex items-center justify-center px-8 py-3 border border-white text-base font-bold rounded-sm text-white hover:bg-white hover:text-gray-900 transition-colors w-full sm:w-auto">
+            Get to Know Us
           </RouterLink>
         </div>
       </div>
     </div>
 
-    <!-- Core Values / Highlights -->
-    <div class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h2 class="text-base font-semibold text-pres-blue tracking-wide uppercase">{{ translations[currentLang].visionLabel }}</h2>
-        <p class="mt-1 text-3xl font-extrabold text-gray-900 sm:text-4xl sm:tracking-tight">
-          {{ translations[currentLang].visionTitle }}
-        </p>
-        <p class="max-w-xl mt-5 mx-auto text-xl text-gray-500">
-          {{ translations[currentLang].visionDesc }}
-        </p>
-      </div>
-
-      <div class="mt-16">
-        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="pt-6">
-            <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-              <div class="-mt-6">
-                <div>
-                  <span class="inline-flex items-center justify-center p-3 bg-pres-blue rounded-md shadow-lg">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                  </span>
-                </div>
-                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">{{ translations[currentLang].card1Title }}</h3>
-                <p class="mt-5 text-base text-gray-500">
-                  {{ translations[currentLang].card1Desc }}
-                </p>
-              </div>
+    <!-- Berita Utama -->
+    <div class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">Top News & Events</h2>
+          <p class="mt-4 text-lg text-gray-500">Follow the latest updates, exhibitions, and workshops from VCD.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div v-for="item in topNewsList" :key="item.id" class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow flex flex-col">
+            <div class="h-48 bg-gray-200"></div>
+            <div class="p-6 flex-1 flex flex-col">
+              <p :class="['text-sm font-semibold mb-2 uppercase', item.type === 'ACHIEVEMENT' ? 'text-green-600' : (item.type === 'ARTICLE' ? 'text-purple-600' : 'text-blue-600')]">{{ item.type }}</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{{ item.title }}</h3>
+              <p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">{{ item.description }}</p>
+              <RouterLink to="/news" class="text-blue-600 font-medium hover:text-blue-800 text-sm flex items-center mt-auto">
+                Read more <span class="ml-1">&rarr;</span>
+              </RouterLink>
             </div>
           </div>
-
-          <div class="pt-6">
-            <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-              <div class="-mt-6">
-                <div>
-                  <span class="inline-flex items-center justify-center p-3 bg-pres-blue rounded-md shadow-lg">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </span>
-                </div>
-                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">{{ translations[currentLang].card2Title }}</h3>
-                <p class="mt-5 text-base text-gray-500">
-                  {{ translations[currentLang].card2Desc }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="pt-6">
-            <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-              <div class="-mt-6">
-                <div>
-                  <span class="inline-flex items-center justify-center p-3 bg-pres-blue rounded-md shadow-lg">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  </span>
-                </div>
-                <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">{{ translations[currentLang].card3Title }}</h3>
-                <p class="mt-5 text-base text-gray-500">
-                  {{ translations[currentLang].card3Desc }}
-                </p>
-              </div>
-            </div>
+          
+          <div v-if="topNewsList.length === 0" class="col-span-3 text-center text-gray-500 py-12">
+            No top news currently available.
           </div>
         </div>
       </div>

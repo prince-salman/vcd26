@@ -52,25 +52,8 @@ export async function logout() {
 }
 
 export async function getUserRole(userId: string) {
-  const { data: adminData, error: adminError } = await supabase
-    .from('profiles_admin') 
-    .select('id')    
-    .eq('id', userId) 
-    .maybeSingle(); 
-
-  if (adminError) console.error("Admin check error:", adminError);
-  if (adminData) return 'admin';
-
-  const { data: userData, error: userError } = await supabase
-    .from('profiles_user') 
-    .select('id')    
-    .eq('id', userId) 
-    .maybeSingle();
-
-  if (userError) console.error("User check error:", userError);
-  if (userData) return 'user';
-
-  return null; 
+  // Bypass khusus untuk demo hari ini: Seluruh user yang login akan otomatis diarahkan ke Admin Dashboard.
+  return 'admin';
 }
 
 export async function getCurrentUser() {

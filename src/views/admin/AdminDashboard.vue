@@ -1,127 +1,261 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white border border-gray-200 rounded-lg p-3 mb-6 shadow-sm text-center">
-        <h1 class="text-sm font-bold text-gray-600 uppercase tracking-widest px-2">
-          {{ translations[currentLang].adminDashboard }}
-        </h1>
+  <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 bg-white border-r border-gray-200 md:h-screen sticky top-0 flex flex-col">
+      <div class="p-6 border-b border-gray-200 flex items-center justify-center md:justify-start">
+        <h1 class="text-xl font-bold text-gray-900 tracking-tight">Admin Dashboard</h1>
       </div>
+      <nav class="flex md:flex-col flex-1 p-4 gap-2 md:space-y-2 overflow-x-auto md:overflow-y-auto">
 
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h2 class="text-xl font-bold text-gray-800">{{ translations[currentLang].welcome }}, {{ profile?.username }}!</h2>
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mt-1">
-            PRESIDENT UNIVERSITY INFORMATION TECHNOLOGY 2026
-          </p>
-        </div>
-        
-        <div class="flex items-center gap-3 self-end sm:self-auto">
-          <div class="text-right">
-            <h3 class="text-sm font-bold text-gray-800">{{ profile?.username }}</h3>
-            <p class="text-xs text-gray-400">{{ user?.email }}</p>
-          </div>
-          <div class="w-11 h-11 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        <button 
+          @click="activeTab = 'news'"
+          :class="['w-auto md:w-full whitespace-nowrap flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors', activeTab === 'news' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100']"
+        >
+          News & Events
+        </button>
+        <button 
+          @click="activeTab = 'gallery'"
+          :class="['w-auto md:w-full whitespace-nowrap flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors', activeTab === 'gallery' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100']"
+        >
+          Artwork Gallery
+        </button>
+        <button 
+          @click="activeTab = 'commissions'"
+          :class="['w-auto md:w-full whitespace-nowrap flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors', activeTab === 'commissions' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100']"
+        >
+          Commission Art
+        </button>
+      </nav>
+      <div class="p-4 border-t border-gray-200">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
             </svg>
           </div>
+          <div>
+            <p class="text-sm font-bold text-gray-900">Admin</p>
+            <p class="text-xs text-gray-500 truncate w-32">{{ user?.email }}</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 lg:p-8 overflow-y-auto h-screen">
+      
+
+
+      <!-- TAB: NEWS -->
+      <div v-if="activeTab === 'news'" class="space-y-6 animate-in fade-in duration-300">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold text-gray-900">Manage News & Events</h2>
+          <button @click="newsForm = {isTop: false}; showNewsForm = true" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Add News</button>
+        </div>
+
+        <div v-if="showNewsForm" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <h3 class="text-lg font-bold mb-4">{{ newsForm.id ? 'Edit' : 'Add' }} News</h3>
+          <form @submit.prevent="submitNews" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Type</label>
+              <select v-model="newsForm.type" required class="w-full border-gray-300 rounded-md p-2 border">
+                <option value="EVENT">EVENT</option>
+                <option value="ACHIEVEMENT">ACHIEVEMENT</option>
+                <option value="ARTICLE">ARTICLE</option>
+                <option value="WORKSHOP">WORKSHOP</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Title</label>
+              <input v-model="newsForm.title" required type="text" class="w-full border-gray-300 rounded-md p-2 border" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1">Description</label>
+              <textarea v-model="newsForm.description" required rows="3" class="w-full border-gray-300 rounded-md p-2 border"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Date</label>
+              <input v-model="newsForm.date" type="text" class="w-full border-gray-300 rounded-md p-2 border" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Location</label>
+              <input v-model="newsForm.location" type="text" class="w-full border-gray-300 rounded-md p-2 border" />
+            </div>
+            <div class="md:col-span-2 flex items-center gap-2">
+              <input type="checkbox" v-model="newsForm.isTop" id="isTop" />
+              <label for="isTop" class="text-sm">Is Top Feature (Shows in Hero)</label>
+            </div>
+            <div class="md:col-span-2 flex justify-end gap-2 mt-4">
+              <button type="button" @click="showNewsForm = false" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">Cancel</button>
+              <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800">Save</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Date</th>
+                <th class="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr v-for="item in newsList" :key="item.id" class="hover:bg-gray-50">
+                <td class="px-4 py-3"><span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">{{ item.type }}</span></td>
+                <td class="px-4 py-3 font-medium">{{ item.title }} <span v-if="item.isTop" class="text-xs text-yellow-600">⭐ Top</span></td>
+                <td class="px-4 py-3 text-gray-500">{{ item.date }}</td>
+                <td class="px-4 py-3 text-right space-x-3">
+                  <button @click="editNews(item)" class="text-blue-600 hover:underline">Edit</button>
+                  <button @click="removeNews(item.id)" class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div v-if="isLoading" class="text-center py-12 text-gray-500">
-        Sedang memuat data proyek...
-      </div>
-
-      <div v-else class="space-y-8">
-        
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-bold text-gray-800">{{ translations[currentLang].projectApprovalQueue }}</h2>
-            <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-              {{ pendingProjects.length }} Waiting
-            </span>
-          </div>
-
-          <div class="overflow-x-auto border border-gray-100 rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
-              <thead class="bg-gray-50 text-gray-700 font-medium">
-                <tr>
-                  <th class="px-4 py-3">{{ translations[currentLang].date }}</th>
-                  <th class="px-4 py-3">{{ translations[currentLang].projectTitle }}</th>
-                  <th class="px-4 py-3">{{ translations[currentLang].teamName }}</th>
-                  <th class="px-4 py-3 text-right">{{ translations[currentLang].actions }}</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                <tr v-for="project in pendingProjects" :key="project.id" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-gray-500">
-                    {{ new Date(project.created_at).toLocaleDateString('id-ID') }}
-                  </td>
-                  <td class="px-4 py-3 font-medium text-gray-900">{{ project.title }}</td>
-                  <td class="px-4 py-3 text-gray-600">{{ project.team_name || '-' }}</td>
-                  <td class="px-4 py-3 text-right space-x-2 whitespace-nowrap">
-                    <a :href="project.project_url" target="_blank" class="text-blue-600 hover:underline text-xs mr-2">View Link</a>
-                    <button @click="handleApprove(project.id)" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1.5 rounded font-medium transition-colors">
-                      {{ translations[currentLang].approve }}
-                    </button>
-                    <button @click="handleRejectOrDelete(project.id)" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded font-medium transition-colors">
-                      {{ translations[currentLang].reject }}
-                    </button>
-                  </td>
-                </tr>
-                <tr v-if="pendingProjects.length === 0">
-                  <td colspan="4" class="text-center py-8 text-gray-400">{{ translations[currentLang].noPendingProjects }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <!-- TAB: GALLERY -->
+      <div v-if="activeTab === 'gallery'" class="space-y-6 animate-in fade-in duration-300">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold text-gray-900">Manage Artwork Gallery</h2>
+          <button @click="galleryForm = {category: 'Graphic Design'}; showGalleryForm = true" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Add Artwork</button>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-bold text-gray-800">{{ translations[currentLang].noPublishedProjects }}</h2>
-            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-              {{ publishedProjects.length }} Active
-            </span>
-          </div>
-
-          <div class="overflow-x-auto border border-gray-100 rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
-              <thead class="bg-gray-50 text-gray-700 font-medium">
-                <tr>
-                  <th class="px-4 py-3">{{ translations[currentLang].date }}</th>
-                  <th class="px-4 py-3">{{ translations[currentLang].projectTitle }}</th>
-                  <th class="px-4 py-3">{{ translations[currentLang].teamName }}</th>
-                  <th class="px-4 py-3">{{ translations[currentLang].status }}</th>
-                  <th class="px-4 py-3 text-right">{{ translations[currentLang].actions }}</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                <tr v-for="project in publishedProjects" :key="project.id" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-gray-500">
-                    {{ new Date(project.updated_at).toLocaleDateString('id-ID') }}
-                  </td>
-                  <td class="px-4 py-3 font-medium text-gray-900">{{ project.title }}</td>
-                  <td class="px-4 py-3 text-gray-600">{{ project.team_name || '-' }}</td>
-                  <td class="px-4 py-3">
-                    <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-medium">Published</span>
-                  </td>
-                  <td class="px-4 py-3 text-right whitespace-nowrap">
-                    <button @click="handleRejectOrDelete(project.id)" class="text-red-600 hover:text-red-900 font-medium text-xs">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-                <tr v-if="publishedProjects.length === 0">
-                  <td colspan="5" class="text-center py-8 text-gray-400">{{ translations[currentLang].noPublishedProjects }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div v-if="showGalleryForm" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <form @submit.prevent="submitGallery" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Title</label>
+              <input v-model="galleryForm.title" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Creator / Maker</label>
+              <input v-model="galleryForm.maker" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Category</label>
+              <select v-model="galleryForm.category" required class="w-full border border-gray-300 rounded-md p-2">
+                <option value="Graphic Design">Graphic Design</option>
+                <option value="Branding">Branding</option>
+                <option value="Illustration">Illustration</option>
+                <option value="Photography">Photography</option>
+                <option value="Videography/Animation">Videography/Animation</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Supervising Lecturer</label>
+              <input v-model="galleryForm.lecturer" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Artwork Image</label>
+              <input type="file" @change="handleImageUpload" accept="image/*" class="w-full border border-gray-300 rounded-md p-1.5 text-sm" />
+              <p v-if="galleryForm.image_url" class="text-xs text-green-600 mt-1">Image selected/uploaded.</p>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1">Description</label>
+              <textarea v-model="galleryForm.desc" required rows="2" class="w-full border border-gray-300 rounded-md p-2"></textarea>
+            </div>
+            <div class="md:col-span-2 flex justify-end gap-2 mt-4">
+              <button type="button" @click="showGalleryForm = false" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">Cancel</button>
+              <button type="submit" :disabled="isUploadingImage" class="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50">
+                {{ isUploadingImage ? 'Uploading...' : 'Save' }}
+              </button>
+            </div>
+          </form>
         </div>
 
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Creator</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr v-for="art in galleryList" :key="art.id" class="hover:bg-gray-50">
+                <td class="px-4 py-3 font-medium">{{ art.title }}</td>
+                <td class="px-4 py-3 text-gray-600">{{ art.maker }}</td>
+                <td class="px-4 py-3"><span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">{{ art.category }}</span></td>
+                <td class="px-4 py-3 text-right space-x-3">
+                  <button @click="editGallery(art)" class="text-blue-600 hover:underline">Edit</button>
+                  <button @click="removeGallery(art.id)" class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <!-- TAB: COMMISSIONS -->
+      <div v-if="activeTab === 'commissions'" class="space-y-6 animate-in fade-in duration-300">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold text-gray-900">Manage Commissions</h2>
+          <button @click="commForm = {available: true}; showCommForm = true" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Add Provider</button>
+        </div>
+
+        <div v-if="showCommForm" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <form @submit.prevent="submitCommission" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Name / Nickname</label>
+              <input v-model="commForm.name" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Service Focus (e.g. Illustration)</label>
+              <input v-model="commForm.focus" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Starting Price</label>
+              <input v-model="commForm.price" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Contact (IG/Email)</label>
+              <input v-model="commForm.contact" required type="text" class="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div class="md:col-span-2 flex items-center gap-2">
+              <input type="checkbox" v-model="commForm.available" id="available" />
+              <label for="available" class="text-sm font-medium">Status Open (Available for commissions)</label>
+            </div>
+            <div class="md:col-span-2 flex justify-end gap-2 mt-4">
+              <button type="button" @click="showCommForm = false" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">Cancel</button>
+              <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800">Save</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3">Provider</th>
+                <th class="px-4 py-3">Focus</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr v-for="item in commList" :key="item.id" class="hover:bg-gray-50">
+                <td class="px-4 py-3 font-medium">{{ item.name }}</td>
+                <td class="px-4 py-3 text-gray-600">{{ item.focus }}</td>
+                <td class="px-4 py-3">
+                  <span v-if="item.available" class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Open</span>
+                  <span v-else class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Closed</span>
+                </td>
+                <td class="px-4 py-3 text-right space-x-3">
+                  <button @click="editCommission(item)" class="text-blue-600 hover:underline">Edit</button>
+                  <button @click="removeCommission(item.id)" class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </main>
   </div>
 </template>
@@ -129,111 +263,79 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { supabase } from '../../lib/supabase' 
-import { currentLang, translations } from '../../store/langStore'
+import { getNews, saveNewsItem, deleteNewsItem, getArtworks, saveArtwork, deleteArtwork, getCommissions, saveCommission, deleteCommission, uploadArtworkImage } from '../../services/dataService'
 
-const pendingProjects = ref<any[]>([])
-const publishedProjects = ref<any[]>([])
-const isLoading = ref(true)
-const isProcessing = ref(false)
+const activeTab = ref('news')
 
-const user = ref<any>(null)
-const profile = ref<any>(null)
-const loading = ref(true)
 
-const fetchProjects = async () => {
-  isLoading.value = true
-  try {
-    const { data: pendingData, error: pendingError } = await supabase
-      .rpc('get_projects_by_status', { p_status: 'pending' })
 
-    if (pendingError) throw pendingError
-    pendingProjects.value = pendingData
+// News Logic
+const newsList = ref<any[]>([])
+const showNewsForm = ref(false)
+const newsForm = ref<any>({})
 
-    const { data: publishedData, error: publishedError } = await supabase
-      .rpc('get_projects_by_status', { p_status: 'published' })
+const refreshNews = async () => { newsList.value = await getNews() }
+const submitNews = async () => { await saveNewsItem({...newsForm.value}); showNewsForm.value = false; await refreshNews(); }
+const editNews = (item: any) => { newsForm.value = {...item}; showNewsForm.value = true; }
+const removeNews = async (id: number) => { if(confirm('Delete this news?')) { await deleteNewsItem(id); await refreshNews(); } }
 
-    if (publishedError) throw publishedError
-    publishedProjects.value = publishedData
+// Gallery Logic
+const galleryList = ref<any[]>([])
+const showGalleryForm = ref(false)
+const galleryForm = ref<any>({})
+const selectedImageFile = ref<File | null>(null)
+const isUploadingImage = ref(false)
 
-  } catch (error: any) {
-    console.error('Gagal mengambil data:', error.message)
-    alert('Terjadi kesalahan saat mengambil data proyek.')
-  } finally {
-    isLoading.value = false
+const handleImageUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    selectedImageFile.value = target.files[0];
   }
 }
 
-const handleApprove = async (projectId: string | number) => {
-  if (!confirm('Setujui proyek ini untuk diterbitkan ke publik?')) return
-  isProcessing.value = true
-
+const refreshGallery = async () => { galleryList.value = await getArtworks() }
+const submitGallery = async () => { 
+  isUploadingImage.value = true;
   try {
-    // Ganti bagian ini pakai rpc
-    const { error } = await supabase.rpc('update_project_status', {
-      p_project_id: projectId,
-      p_new_status: 'published'
-    })
-
-    if (error) throw error
-    
-    alert('Proyek berhasil disetujui!')
-    fetchProjects() 
-  } catch (error: any) {
-    console.error('Gagal menyetujui proyek:', error.message)
-    alert('Gagal memproses persetujuan.')
+    if (selectedImageFile.value) {
+      const url = await uploadArtworkImage(selectedImageFile.value);
+      galleryForm.value.image_url = url;
+    }
+    await saveArtwork({...galleryForm.value}); 
+    showGalleryForm.value = false; 
+    selectedImageFile.value = null;
+    await refreshGallery(); 
   } finally {
-    isProcessing.value = false 
+    isUploadingImage.value = false;
   }
 }
+const editGallery = (item: any) => { galleryForm.value = {...item}; selectedImageFile.value = null; showGalleryForm.value = true; }
+const removeGallery = async (id: number) => { if(confirm('Delete artwork?')) { await deleteArtwork(id); await refreshGallery(); } }
 
-const handleRejectOrDelete = async (projectId: string | number) => {
-  if (!confirm('Apakah Anda yakin ingin menghapus/menolak proyek ini?')) return
-  isProcessing.value = true
+// Commission Logic
+const commList = ref<any[]>([])
+const showCommForm = ref(false)
+const commForm = ref<any>({available: true})
 
-  try {
-    // Ganti bagian ini pakai rpc
-    const { error } = await supabase.rpc('update_project_status', {
-      p_project_id: projectId,
-      p_new_status: 'banned'
-    })
+const refreshCommissions = async () => { commList.value = await getCommissions() }
+const submitCommission = async () => { await saveCommission({...commForm.value}); showCommForm.value = false; await refreshCommissions(); }
+const editCommission = (item: any) => { commForm.value = {...item}; showCommForm.value = true; }
+const removeCommission = async (id: number) => { if(confirm('Delete commission provider?')) { await deleteCommission(id); await refreshCommissions(); } }
 
-    if (error) throw error
-
-    alert('Aksi berhasil diproses!')
-    fetchProjects() // Pastikan fetchProjects ini juga udah pakai rpc yang sebelumnya kita bahas ya!
-  } catch (error: any) {
-    console.error('Gagal memproses aksi:', error.message)
-    alert('Gagal memproses aksi.')
-  } finally {
-    isProcessing.value = false
-  }
-}
 
 onMounted(async () => {
-  fetchProjects()
+
+  refreshNews()
+  refreshGallery()
+  refreshCommissions()
 
   try {
     const { data: { session } } = await supabase.auth.getSession()
-
     if (session) {
       user.value = session.user
-
-      // 👇 Panggil RPC yang barusan kita bikin 👇
-      const { data, error } = await supabase
-        .rpc('get_admin_profile', {
-          p_admin_id: session.user.id
-        })
-        .maybeSingle() // Pakai maybeSingle karena ekspektasinya cuma 1 baris data
-
-      if (error) {
-        console.error("Gagal mengambil data profil lewat RPC:", error.message)
-      } else {
-        // Data berhasil diambil nembus RLS!
-        profile.value = data 
-      }
     }
   } catch (err) {
-    console.error("Kesalahan sistem:", err)
+    console.error("Auth error:", err)
   } finally {
     loading.value = false
   }

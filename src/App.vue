@@ -3,7 +3,6 @@ import { RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import { supabase } from './lib/supabase.ts'
-
 void supabase
 </script>
 

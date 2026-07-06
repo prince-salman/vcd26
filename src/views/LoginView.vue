@@ -4,7 +4,7 @@
       <div class="w-full max-w-md mx-auto">
         <div class="mb-8">
           <div class="mb-8">
-            <img src="/logo.png" alt="Logo PU" class="w-16 h-16 object-contain" />
+            <img src="https://fada.president.ac.id/themev2/images/fada/logo-frame-pu-fada-text-landscape.png" alt="Logo FADA" class="w-16 h-16 object-cover object-left" />
           </div>
         </div>
 
@@ -80,7 +80,7 @@ const handleLogin = async () => {
   const { role, error } = await login(emailOrUsername.value, password.value);
 
   if (error) {
-    errorMessage.value = (error as any).message || "Email atau password salah.";
+    errorMessage.value = (error as any).message || "Incorrect email or password.";
     loading.value = false;
     return; 
   }
@@ -93,7 +93,7 @@ const handleLogin = async () => {
   } else if (role === 'user') {
     router.push('/user');
   } else {
-    errorMessage.value = "Akun berhasil masuk, tetapi role tidak terdaftar.";
+    errorMessage.value = "Login successful, but role is not registered.";
   }
 };
 </script>
