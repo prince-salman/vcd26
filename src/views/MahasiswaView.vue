@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import directoryData from '../data/dataMahasiswa.json';
 
-const students = ref(directoryData);
+const students = ref([...directoryData].sort((a: any, b: any) => a.name.localeCompare(b.name)));
 const searchQuery = ref('');
 
 // Filter sederhana
